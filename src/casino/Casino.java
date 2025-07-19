@@ -66,7 +66,8 @@ public class Casino extends JFrame {
 
         b2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "En mantenimiento");
+                BlackJack blackjack = new BlackJack(jugador);
+                dispose();
 
             }
         });

@@ -18,7 +18,7 @@ public class Archivo {
     
     public static void guardarTokens(PlayerLocal jugador) {
         try {
-        BufferedWriter writer = new BufferedWriter(new FileWriter("prueba.txt"));
+        BufferedWriter writer = new BufferedWriter(new FileWriter("Jugador.txt"));
         writer.write(String.valueOf(jugador.tokens));
         writer.close();
         }
@@ -32,7 +32,7 @@ public class Archivo {
     {
         int tokens = 0;
     try {
-        File archivo = new File("prueba.txt");
+        File archivo = new File("Jugador.txt");
         
         if (!archivo.exists())
         {
@@ -41,7 +41,7 @@ public class Archivo {
             writer.close();
             System.out.println("Creando archivo...");
         }
-        BufferedReader reader = new BufferedReader(new FileReader("prueba.txt"));
+        BufferedReader reader = new BufferedReader(new FileReader("Jugador.txt"));
         String linea = reader.readLine();
         tokens = Integer.parseInt(linea);
         reader.close();

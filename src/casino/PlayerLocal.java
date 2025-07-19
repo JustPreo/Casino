@@ -25,7 +25,7 @@ public class PlayerLocal {
     return this.tokens;
     }
     
-    public void setTokens(int tokens) {
+    public void setTokens(int tokens) { //Algun caso especial?
         this.tokens = tokens;
     }
     

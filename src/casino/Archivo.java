@@ -39,6 +39,7 @@ public class Archivo {
         BufferedWriter writer = new BufferedWriter(new FileWriter(archivo));
             writer.write("50"); //Los tokens con los que inicia
             writer.close();
+            System.out.println("Creando archivo...");
         }
         BufferedReader reader = new BufferedReader(new FileReader("prueba.txt"));
         String linea = reader.readLine();

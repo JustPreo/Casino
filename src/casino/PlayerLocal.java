@@ -20,6 +20,15 @@ public class PlayerLocal {
     
     }
     
+    public int getTokens()
+    {
+    return this.tokens;
+    }
+    
+    public void setTokens(int tokens) {
+        this.tokens = tokens;
+    }
+    
     
     
 }

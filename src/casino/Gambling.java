@@ -96,7 +96,7 @@ public class Gambling extends JFrame {
         bet1.addActionListener(new ActionListener() { //Cuando le de al boton de jugar
             public void actionPerformed(ActionEvent e) {
                 //Logica despues de bets
-
+                
                 funcion(1);
 
             }
@@ -147,6 +147,13 @@ public class Gambling extends JFrame {
     }
      */
     public void funcion(int bet) {
+        if (jugador.tokens < bet)
+        {
+        JOptionPane.showMessageDialog(null, "No puedes apostar , ve a mendigar");
+        Casino casino = new Casino(jugador);
+                    casino.setVisible(true);
+                    dispose();
+        }
         int contador[] = {0};
         Slot slots[] = new Slot[3];
         //Logica despues de bets
@@ -182,9 +189,11 @@ public class Gambling extends JFrame {
                             jugador.tokens += ganancia;
                             JOptionPane.showMessageDialog(null, "Ganaste " + ganancia + " con multiplicador de " + multiplicador);
                             Dinero.setText("TOKENS: "+jugador.tokens);
+                            Archivo.guardarTokens(jugador);
                         } else {
                             JOptionPane.showMessageDialog(null, "WOMP WOMP");
                             Dinero.setText("TOKENS: "+jugador.tokens);
+                            Archivo.guardarTokens(jugador);
                         }
                         jugando = false;
 

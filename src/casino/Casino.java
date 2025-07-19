@@ -23,6 +23,8 @@ public class Casino extends JFrame {
     private JLabel fondo1, palace;
 
     public Casino(PlayerLocal jugador) {
+        jugador.tokens = Archivo.conseguirTokens();
+        System.out.println(jugador.tokens);
         //Fondo
         ImageIcon fondo = new ImageIcon(getClass().getResource("/casino/Fondos/Random.jpg"));
         fondo1 = new JLabel(fondo);

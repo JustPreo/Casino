@@ -21,10 +21,10 @@ public class BlackJack extends JFrame {
     int[] excluidos = new int[16];
     Slot[] cartas = new Slot[16];
     int cantidadActual = 0;
-    int valorCartas, randomD2, numero = 0;
+    int valorCartas, valorCartasD, randomD2, numero = 0,bet;
 
     private PlayerLocal jugador;
-    private JLabel fondo1, luigiCam, luigiCamText, cartas1, cartas2, cartas3, cartas4, cartasD1, cartasD2, cartasD3;
+    private JLabel fondo1, luigiCam, luigiCamText, cartas1, cartas2, cartas3, cartas4, cartas5, cartas6, cartasD1, cartasD2, cartasD3, Dinero;
     private JButton bet10, bet25, bet100, hit, stay;
     Random random = new Random();
     Fotos fotos = new Fotos();
@@ -45,6 +45,13 @@ public class BlackJack extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
+
+        Dinero = new JLabel("TOKENS: " + jugador.tokens);
+        Dinero.setForeground(Color.BLACK);
+        Dinero.setOpaque(true);
+        Dinero.setBackground(Color.white);
+        Dinero.setBounds(700, 0, 100, 30);
+        fondo1.add(Dinero);
 
         ImageIcon gifLuigi = new ImageIcon(getClass().getResource("/casino/BlackJack/luigi-casino.gif"));
         luigiCam = new JLabel(gifLuigi);
@@ -69,29 +76,47 @@ public class BlackJack extends JFrame {
         fondo1.add(cartasD2);
         cartasD2.setVisible(false);
 
+        cartasD3 = new JLabel();
+        cartasD3.setBounds(375, 50, 100, 100);
+        cartasD3.setIcon(fotos.getBlackJack(13).imagen);
+        fondo1.add(cartasD3);
+        cartasD3.setVisible(false);
+
         cartas1 = new JLabel();
         cartas1.setIcon(fotos.getBlackJack(13).imagen);
-        cartas1.setBounds(275, 350, 100, 100);
+        cartas1.setBounds(250, 350, 100, 100);
         fondo1.add(cartas1);
         cartas1.setVisible(false);
 
         cartas2 = new JLabel();
         cartas2.setIcon(fotos.getBlackJack(13).imagen);
-        cartas2.setBounds(325, 350, 100, 100);
+        cartas2.setBounds(300, 350, 100, 100);
         fondo1.add(cartas2);
         cartas2.setVisible(false);
 
         cartas3 = new JLabel();
         cartas3.setIcon(fotos.getBlackJack(13).imagen);
-        cartas3.setBounds(375, 350, 100, 100);
+        cartas3.setBounds(350, 350, 100, 100);
         fondo1.add(cartas3);
         cartas3.setVisible(false);
 
         cartas4 = new JLabel();
         cartas4.setIcon(fotos.getBlackJack(13).imagen);
-        cartas4.setBounds(425, 350, 100, 100);
+        cartas4.setBounds(400, 350, 100, 100);
         fondo1.add(cartas4);
         cartas4.setVisible(false);
+
+        cartas5 = new JLabel();
+        cartas5.setIcon(fotos.getBlackJack(13).imagen);
+        cartas5.setBounds(450, 350, 100, 100);
+        fondo1.add(cartas5);
+        cartas5.setVisible(false);
+
+        cartas6 = new JLabel();
+        cartas6.setIcon(fotos.getBlackJack(13).imagen);
+        cartas6.setBounds(500, 350, 100, 100);
+        fondo1.add(cartas6);
+        cartas6.setVisible(false);
         //Botones
         bet10 = new JButton("BET 10");
         bet10.setBounds(250, 0, 100, 100);
@@ -108,10 +133,12 @@ public class BlackJack extends JFrame {
         stay = new JButton("STAY");
         stay.setBounds(100, 400, 100, 50);
         fondo1.add(stay);
+        stay.setVisible(false);
 
         hit = new JButton("HIT");
         hit.setBounds(600, 400, 100, 50);
         fondo1.add(hit);
+        hit.setVisible(false);
 
         //Listeners
         hit.addActionListener(new ActionListener() {
@@ -123,35 +150,78 @@ public class BlackJack extends JFrame {
                     cartas[cantidadActual] = carta;
                     if (cartas[cantidadActual].valor != 1) {
                         valorCartas += cartas[cantidadActual].valor;
-                        if (valorCartas > 21)
-                        {
-                        JOptionPane.showMessageDialog(null, "PERDISTE");
+                        if (valorCartas > 21) {
+                            JOptionPane.showMessageDialog(null, "PERDISTE");
+                            Casino casino = new Casino(jugador);
+                            Archivo.guardarTokens(jugador);
+                            dispose();
                         }
                     }
                     cartas3.setIcon(carta.imagen);
                     cantidadActual++;
                     cartas3.setVisible(true);
-                    numero ++;
-                    
-                } else {
+                    numero++;
+
+                } else if (numero == 1) {
                     int nrandom = random.nextInt(13);
                     Slot carta = fotos.getBlackJack(nrandom);
                     excluidos[cantidadActual] = nrandom;
                     cartas[cantidadActual] = carta;
                     if (cartas[cantidadActual].valor != 1) {
                         valorCartas += cartas[cantidadActual].valor;
-                        if (valorCartas > 21)
-                        {
-                        JOptionPane.showMessageDialog(null, "PERDISTE");
+                        if (valorCartas > 21) {
+                            JOptionPane.showMessageDialog(null, "PERDISTE");
+                            Casino casino = new Casino(jugador);
+                            Archivo.guardarTokens(jugador);
+                            dispose();
                         }
                     }
-                    
+
                     cartas4.setIcon(carta.imagen);
                     cantidadActual++;
                     cartas4.setVisible(true);
+                    numero++;
+                } else if (numero == 2) {
+                    int nrandom = random.nextInt(13);
+                    Slot carta = fotos.getBlackJack(nrandom);
+                    excluidos[cantidadActual] = nrandom;
+                    cartas[cantidadActual] = carta;
+                    if (cartas[cantidadActual].valor != 1) {
+                        valorCartas += cartas[cantidadActual].valor;
+                        if (valorCartas > 21) {
+                            JOptionPane.showMessageDialog(null, "PERDISTE");
+                            Casino casino = new Casino(jugador);
+                            Archivo.guardarTokens(jugador);
+                            dispose();
+                        }
+                    }
+
+                    cartas5.setIcon(carta.imagen);
+                    cantidadActual++;
+                    cartas5.setVisible(true);
+                    numero++;
+                } else if (numero == 3) {
+                    int nrandom = random.nextInt(13);
+                    Slot carta = fotos.getBlackJack(nrandom);
+                    excluidos[cantidadActual] = nrandom;
+                    cartas[cantidadActual] = carta;
+                    if (cartas[cantidadActual].valor != 1) {
+                        valorCartas += cartas[cantidadActual].valor;
+                        if (valorCartas > 21) {
+                            JOptionPane.showMessageDialog(null, "PERDISTE");
+                            Casino casino = new Casino(jugador);
+                            Archivo.guardarTokens(jugador);
+                            dispose();
+                        }
+                    }
+
+                    cartas6.setIcon(carta.imagen);
+                    cantidadActual++;
+                    cartas6.setVisible(true);
+                    numero++;
+                } else {
+                    System.out.println("Hasta ahi se quedo XD");
                 }
-                
-                
 
                 for (int a = 2; a < cantidadActual; a++) {
                     if (excluidos[a] == 0) {
@@ -161,26 +231,72 @@ public class BlackJack extends JFrame {
                                 "Elige valor para As", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
 
                         cartas[a].valor = (eleccion == 0) ? 1 : 11;
-                        if (valorCartas > 21)
-                        {
-                        JOptionPane.showMessageDialog(null, "PERDISTE");
+                        int multiplicador = condition(1, valorCartas);
+
+                        if (valorCartas > 21) {
+                            JOptionPane.showMessageDialog(null, "PERDISTE");
+                            Casino casino = new Casino(jugador);
+                            Archivo.guardarTokens(jugador);
+                            dispose();
+
                         }
 
                     }
                 }
-                
-                if (valorCartas > 21)
-                        {
-                        JOptionPane.showMessageDialog(null, "PERDISTE");
-                        }
+
+                /*if (valorCartas > 21) {
+                    JOptionPane.showMessageDialog(null, "PERDISTE");
+                    Casino casino = new Casino(jugador);
+                    Archivo.guardarTokens(jugador);
+                    dispose();
+                }*/
 
             }
         });
 
         stay.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                
+                hit.setVisible(false);
                 Slot cartaD2 = fotos.getBlackJack(randomD2);
                 cartasD2.setIcon(cartaD2.imagen);
+
+                if (valorCartasD <= 10) {
+                    int r = random.nextInt(13);
+                    Slot carta = fotos.getBlackJack(r);
+                    cartasD3.setIcon(carta.imagen);
+                    valorCartasD +=carta.valor;
+                }
+                System.out.println("VALOR CARTAS D:"+valorCartasD);
+        System.out.println("VALOR CARTAS P:"+valorCartas);
+                int multiplicador = condition(valorCartasD,valorCartas);
+                        
+                        if (multiplicador == 0)
+                        {
+                        JOptionPane.showMessageDialog(null, "PERDISTE");
+                        Casino casino = new Casino(jugador);
+                        Archivo.guardarTokens(jugador);
+                        dispose();
+                        }
+                        
+                        else if (multiplicador == 2)
+                        {
+                        JOptionPane.showMessageDialog(null, "GANASTE "+multiplicador+"x tu apuesta");
+                        Casino casino = new Casino(jugador);
+                        Archivo.guardarTokens(jugador);
+                        dispose();
+                        
+                        }
+                        
+                        else if (multiplicador == 1)
+                        {
+                        JOptionPane.showMessageDialog(null, "EMPATE");
+                        Casino casino = new Casino(jugador);
+                        Archivo.guardarTokens(jugador);
+                        dispose();
+                        
+                        }
+
             }
         });
 
@@ -210,6 +326,14 @@ public class BlackJack extends JFrame {
     }
 
     public void funcion(int bet) {
+        if (jugador.tokens < bet)
+        {
+            JOptionPane.showMessageDialog(null, "Estas pobre , no puedes hacer esto");
+        return;
+        }
+        
+        jugador.tokens -= bet;
+        this.bet = bet;
         int valorActual = 0;
 
         cantidadActual = 0;
@@ -249,23 +373,56 @@ public class BlackJack extends JFrame {
         cartas1.setVisible(true);
         cartas2.setIcon(carta2.imagen);
         cartas2.setVisible(true);
-        cartas3.setVisible(true);
-        cartas4.setVisible(true);
 
         int randomD1 = random.nextInt(13);
         randomD2 = random.nextInt(13);
         Slot cartaD1 = fotos.getBlackJack(randomD1);
         Slot cartaD2 = fotos.getBlackJack(randomD2);
 
+        if (cartaD1.especial) {
+            if (cartaD2.valor <= 10) {
+                cartaD1.valor = 11;
+            }
+        }
+        if (cartaD2.especial) {
+            if (cartaD1.valor <= 10) {
+                cartaD2.valor = 11;
+            }
+        }
+
+        valorCartasD = cartaD1.valor + cartaD2.valor;
+        System.out.println("VALOR CARTAS D:"+valorCartasD);
+        System.out.println("VALOR CARTAS P:"+valorCartas);
         cartasD1.setIcon(cartaD1.imagen);
 
         cartasD1.setVisible(true);
         cartasD2.setVisible(true);
-        
-        if (valorCartas > 21)
-        {
-        JOptionPane.showMessageDialog(null, "PERDISTE");
+
+        hit.setVisible(true);
+        stay.setVisible(true);
+
+        if (valorCartas > 21) {
+            JOptionPane.showMessageDialog(null, "PERDISTE");
+            Casino casino = new Casino(jugador);
+            Archivo.guardarTokens(jugador);
+            dispose();
         }
+
+    }
+
+    public int condition(int dealer, int jugador) {
+
+        if (jugador > 21) {
+            return 0;//Retorna el multiplicador
+        } else if (jugador == dealer) {
+            return 1;//Devuelve el bet
+        } else if (jugador > dealer) {
+            return 2;//Si gana jugador
+        } else if (dealer > jugador) {
+            return 0;//Pierde
+        }
+
+        return 0;
 
     }
 

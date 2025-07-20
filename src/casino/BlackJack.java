@@ -30,7 +30,7 @@ public class BlackJack extends JFrame {
     Fotos fotos = new Fotos();
 
     public BlackJack(PlayerLocal jugador) {
-        int randomD2 = 0;
+        
         valorCartas = 0;
         this.jugador = jugador;
         setTitle("Blackjack");
@@ -148,6 +148,9 @@ public class BlackJack extends JFrame {
                     Slot carta = fotos.getBlackJack(nrandom);
                     excluidos[cantidadActual] = nrandom;
                     cartas[cantidadActual] = carta;
+                    cartas3.setIcon(carta.imagen);
+                    cartas3.setVisible(true);
+                    numero++;
                     if (cartas[cantidadActual].valor != 1) {
                         valorCartas += cartas[cantidadActual].valor;
                         if (valorCartas > 21) {
@@ -157,16 +160,16 @@ public class BlackJack extends JFrame {
                             dispose();
                         }
                     }
-                    cartas3.setIcon(carta.imagen);
                     cantidadActual++;
-                    cartas3.setVisible(true);
-                    numero++;
 
                 } else if (numero == 1) {
                     int nrandom = random.nextInt(13);
                     Slot carta = fotos.getBlackJack(nrandom);
                     excluidos[cantidadActual] = nrandom;
                     cartas[cantidadActual] = carta;
+                    cartas4.setIcon(carta.imagen);
+                    cartas4.setVisible(true);
+                    numero++;
                     if (cartas[cantidadActual].valor != 1) {
                         valorCartas += cartas[cantidadActual].valor;
                         if (valorCartas > 21) {
@@ -177,15 +180,17 @@ public class BlackJack extends JFrame {
                         }
                     }
 
-                    cartas4.setIcon(carta.imagen);
+                    
+                    
                     cantidadActual++;
-                    cartas4.setVisible(true);
-                    numero++;
                 } else if (numero == 2) {
                     int nrandom = random.nextInt(13);
                     Slot carta = fotos.getBlackJack(nrandom);
                     excluidos[cantidadActual] = nrandom;
                     cartas[cantidadActual] = carta;
+                    cartas5.setIcon(carta.imagen);
+                    cartas5.setVisible(true);
+                    numero++;
                     if (cartas[cantidadActual].valor != 1) {
                         valorCartas += cartas[cantidadActual].valor;
                         if (valorCartas > 21) {
@@ -196,15 +201,16 @@ public class BlackJack extends JFrame {
                         }
                     }
 
-                    cartas5.setIcon(carta.imagen);
+                    
                     cantidadActual++;
-                    cartas5.setVisible(true);
-                    numero++;
                 } else if (numero == 3) {
                     int nrandom = random.nextInt(13);
                     Slot carta = fotos.getBlackJack(nrandom);
                     excluidos[cantidadActual] = nrandom;
                     cartas[cantidadActual] = carta;
+                    cartas6.setIcon(carta.imagen);
+                    cartas6.setVisible(true);
+                    numero++;
                     if (cartas[cantidadActual].valor != 1) {
                         valorCartas += cartas[cantidadActual].valor;
                         if (valorCartas > 21) {
@@ -215,10 +221,9 @@ public class BlackJack extends JFrame {
                         }
                     }
 
-                    cartas6.setIcon(carta.imagen);
+                    
+                    
                     cantidadActual++;
-                    cartas6.setVisible(true);
-                    numero++;
                 } else {
                     System.out.println("Hasta ahi se quedo XD");
                 }
@@ -230,8 +235,8 @@ public class BlackJack extends JFrame {
                                 "¿Qué valor querés para tu As?",
                                 "Elige valor para As", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
 
-                        cartas[a].valor = (eleccion == 0) ? 1 : 11;
-                        int multiplicador = condition(1, valorCartas);
+                        valorCartas += (eleccion == 0) ? 1 : 11;
+                        int multiplicador = condition(valorCartasD, valorCartas);
 
                         if (valorCartas > 21) {
                             JOptionPane.showMessageDialog(null, "PERDISTE");
@@ -261,11 +266,12 @@ public class BlackJack extends JFrame {
                 Slot cartaD2 = fotos.getBlackJack(randomD2);
                 cartasD2.setIcon(cartaD2.imagen);
 
-                if (valorCartasD <= 10) {
+                if (valorCartasD < 17 && valorCartasD < valorCartas) {
                     int r = random.nextInt(13);
                     Slot carta = fotos.getBlackJack(r);
                     cartasD3.setIcon(carta.imagen);
-                    valorCartasD +=carta.valor;
+                    cartasD3.setVisible(true);
+                    valorCartasD = valorCartasD + carta.valor;
                 }
                 System.out.println("VALOR CARTAS D:"+valorCartasD);
         System.out.println("VALOR CARTAS P:"+valorCartas);
@@ -281,6 +287,8 @@ public class BlackJack extends JFrame {
                         
                         else if (multiplicador == 2)
                         {
+                            jugador.tokens += bet * multiplicador;
+                            
                         JOptionPane.showMessageDialog(null, "GANASTE "+multiplicador+"x tu apuesta");
                         Casino casino = new Casino(jugador);
                         Archivo.guardarTokens(jugador);
@@ -290,6 +298,7 @@ public class BlackJack extends JFrame {
                         
                         else if (multiplicador == 1)
                         {
+                            jugador.tokens += bet * multiplicador;
                         JOptionPane.showMessageDialog(null, "EMPATE");
                         Casino casino = new Casino(jugador);
                         Archivo.guardarTokens(jugador);
@@ -332,7 +341,7 @@ public class BlackJack extends JFrame {
         return;
         }
         
-        jugador.tokens -= bet;
+        jugador.tokens =jugador.tokens -  bet;
         this.bet = bet;
         int valorActual = 0;
 
@@ -382,14 +391,25 @@ public class BlackJack extends JFrame {
         if (cartaD1.especial) {
             if (cartaD2.valor <= 10) {
                 cartaD1.valor = 11;
+                System.out.println("ACE CARTA 1");
+            }
+            else {
+            cartaD1.valor = 1;
             }
         }
         if (cartaD2.especial) {
             if (cartaD1.valor <= 10) {
                 cartaD2.valor = 11;
+                System.out.println("ACE CARTA 2");
+            }
+            else {
+            cartaD2.valor = 1;
             }
         }
 
+        System.out.println("CARTA D 1 :"+cartaD1.valor);
+        System.out.println("CARTA D 2 :"+cartaD2.valor);
+        
         valorCartasD = cartaD1.valor + cartaD2.valor;
         System.out.println("VALOR CARTAS D:"+valorCartasD);
         System.out.println("VALOR CARTAS P:"+valorCartas);
@@ -407,6 +427,7 @@ public class BlackJack extends JFrame {
             Archivo.guardarTokens(jugador);
             dispose();
         }
+        Dinero.setText("TOKENS: " + jugador.tokens);
 
     }
 
@@ -414,7 +435,12 @@ public class BlackJack extends JFrame {
 
         if (jugador > 21) {
             return 0;//Retorna el multiplicador
-        } else if (jugador == dealer) {
+        }else if (dealer > 21)
+        {
+        return 2;
+        }
+        
+        else if (jugador == dealer) {
             return 1;//Devuelve el bet
         } else if (jugador > dealer) {
             return 2;//Si gana jugador

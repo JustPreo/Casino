@@ -14,7 +14,7 @@ public class PlayerLocal {
     
     public PlayerLocal()
     {
-    this.tokens = 50;
+    
     this.wins = 0;
     this.perdidas = 0;
     

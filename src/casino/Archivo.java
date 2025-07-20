@@ -37,7 +37,7 @@ public class Archivo {
         if (!archivo.exists())
         {
         BufferedWriter writer = new BufferedWriter(new FileWriter(archivo));
-            writer.write("50"); //Los tokens con los que inicia
+            writer.write("10"); //Los tokens con los que inicia
             writer.close();
             System.out.println("Creando archivo...");
         }

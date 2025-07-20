@@ -150,9 +150,7 @@ public class Gambling extends JFrame {
         if (jugador.tokens < bet)
         {
         JOptionPane.showMessageDialog(null, "No puedes apostar , ve a mendigar");
-        Casino casino = new Casino(jugador);
-                    casino.setVisible(true);
-                    dispose();
+        return;
         }
         int contador[] = {0};
         Slot slots[] = new Slot[3];

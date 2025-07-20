@@ -9,8 +9,18 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import javax.swing.*;
 import java.util.Random;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 //import javax.swing.Timer;
 
 /**
@@ -26,13 +36,27 @@ public class Gambling extends JFrame {
     Fotos fotos = new Fotos();
     //Declaracion botones
     JButton bet1, bet2, bet3, Atras;
-    JLabel slot1I, slot2I, slot3I , Dinero;
+    JLabel slot1I, slot2I, slot3I, Dinero;
     Random random = new Random();
     //Timer timer = new Timer();
 
     int slot1, slot2, slot3;
 
     public Gambling(PlayerLocal jugador) {
+        try {
+            URL sonido = getClass().getResource("/casino/WAV/letsgo.wav");
+            if (sonido == null) {
+                System.out.println("WOMP WOMP NULL");
+            } else {
+                AudioInputStream audioInput = AudioSystem.getAudioInputStream(sonido);
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInput);
+                clip.start();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         this.jugador = jugador;
         setTitle("GAMBLING");
         setSize(800, 500);
@@ -50,14 +74,13 @@ public class Gambling extends JFrame {
         setResizable(false);
 
         //Jlabel?
-        Dinero = new JLabel("TOKENS: "+jugador.tokens);
+        Dinero = new JLabel("TOKENS: " + jugador.tokens);
         Dinero.setForeground(Color.BLACK);
         Dinero.setOpaque(true);
         Dinero.setBackground(Color.white);
-        Dinero.setBounds(0,0,100,30);
+        Dinero.setBounds(0, 0, 100, 30);
         fondo1.add(Dinero);
-        
-        
+
         slot1I = new JLabel();
         slot1I.setIcon(fotos.getSlot(1).imagen);
         slot1I.setBounds(250, 75, 250, 250);
@@ -96,7 +119,7 @@ public class Gambling extends JFrame {
         bet1.addActionListener(new ActionListener() { //Cuando le de al boton de jugar
             public void actionPerformed(ActionEvent e) {
                 //Logica despues de bets
-                
+
                 funcion(1);
 
             }
@@ -147,17 +170,16 @@ public class Gambling extends JFrame {
     }
      */
     public void funcion(int bet) {
-        if (jugador.tokens < bet)
-        {
-        JOptionPane.showMessageDialog(null, "No puedes apostar , ve a mendigar");
-        return;
+        if (jugador.tokens < bet) {
+            JOptionPane.showMessageDialog(null, "No puedes apostar , ve a mendigar");
+            return;
         }
         int contador[] = {0};
         Slot slots[] = new Slot[3];
         //Logica despues de bets
         if (!jugando) {
             jugador.tokens -= bet;
-            Dinero.setText("TOKENS: "+jugador.tokens);
+            Dinero.setText("TOKENS: " + jugador.tokens);
             Timer timer = new Timer(100, new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     if (contador[0] < 30) {
@@ -186,11 +208,11 @@ public class Gambling extends JFrame {
                         if (ganancia > 0) {
                             jugador.tokens += ganancia;
                             JOptionPane.showMessageDialog(null, "Ganaste " + ganancia + " con multiplicador de " + multiplicador);
-                            Dinero.setText("TOKENS: "+jugador.tokens);
+                            Dinero.setText("TOKENS: " + jugador.tokens);
                             Archivo.guardarTokens(jugador);
                         } else {
                             JOptionPane.showMessageDialog(null, "WOMP WOMP");
-                            Dinero.setText("TOKENS: "+jugador.tokens);
+                            Dinero.setText("TOKENS: " + jugador.tokens);
                             Archivo.guardarTokens(jugador);
                         }
                         jugando = false;

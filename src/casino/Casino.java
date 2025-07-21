@@ -12,7 +12,7 @@ import javax.swing.*;
 
 /**
  *
- * @author elmas
+ * 
  */
 public class Casino extends JFrame {
     private PlayerLocal jugador;

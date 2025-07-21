@@ -48,7 +48,7 @@ public class Fotos {
         blackJack[10] = new Slot("Nombre", 10, "/casino/BlackJack/11.png", false);
         blackJack[11] = new Slot("Nombre", 10, "/casino/BlackJack/12.png", false);
         blackJack[12] = new Slot("Nombre", 10, "/casino/BlackJack/13.png", false);
-        blackJack[13] = new Slot("Vuelta", 0, "/casino/BlackJack/vuelta.png", false);
+        blackJack[13] = new Slot("Vuelta", 0, "/casino/BlackJack/Vuelta.png", false);
 
     }
 

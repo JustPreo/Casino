@@ -25,7 +25,7 @@ public class BlackJack extends JFrame {
 
     private PlayerLocal jugador;
     private JLabel fondo1, luigiCam, luigiCamText, cartas1, cartas2, cartas3, cartas4, cartas5, cartas6, cartasD1, cartasD2, cartasD3, Dinero;
-    private JButton bet10, bet25, bet100, hit, stay;
+    private JButton bet10, bet25, bet100, hit, stay , Atras;
     Random random = new Random();
     Fotos fotos = new Fotos();
 
@@ -63,6 +63,8 @@ public class BlackJack extends JFrame {
         luigiCamText.setForeground(Color.WHITE);
         luigiCamText.setBackground(Color.green);
         fondo1.add(luigiCamText);
+        
+        
 
         cartasD1 = new JLabel();
         cartasD1.setBounds(275, 50, 100, 100);
@@ -139,8 +141,25 @@ public class BlackJack extends JFrame {
         hit.setBounds(600, 400, 100, 50);
         fondo1.add(hit);
         hit.setVisible(false);
+        
+        Atras = new JButton("Atras");
+        Atras.setBounds(660, 410, 125, 50);
+        fondo1.add(Atras);
 
         //Listeners
+        Atras.addActionListener(new ActionListener() { //Cuando le de al boton de jugar
+            public void actionPerformed(ActionEvent e) {
+                //Logica despues de bets
+
+                
+                    Casino casino = new Casino(jugador);
+                    casino.setVisible(true);
+                    dispose();
+                
+
+            }
+        });
+        
         hit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (numero == 0) {
@@ -420,6 +439,7 @@ public class BlackJack extends JFrame {
 
         hit.setVisible(true);
         stay.setVisible(true);
+        Atras.setVisible(false);
 
         if (valorCartas > 21) {
             JOptionPane.showMessageDialog(null, "PERDISTE");

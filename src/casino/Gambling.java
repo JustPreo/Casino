@@ -68,7 +68,7 @@ public class Gambling extends JFrame {
         fondo1.setBounds(0, 0, 800, 500); // Tamaño igual al JFrame
         setContentPane(fondo1);
         fondo1.setLayout(null);
-
+        
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);

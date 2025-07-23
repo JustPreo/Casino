@@ -23,9 +23,11 @@ public class Mendigar1 extends JFrame {
     private JLabel personaje, fondo1, piso;
     private NPCS[] npcs;
     private NPCS[] spawner;
+    private int npcsActivos;
 
     public Mendigar1(PlayerLocal jugador, int limiteNPCS) {
         this.jugador = jugador;
+        
         spawner = new NPCS[limiteNPCS];
         npcs = new NPCS[3];
         //Formato = (int rango, int dinero, int probabilidades, String rutaI
@@ -33,18 +35,7 @@ public class Mendigar1 extends JFrame {
         npcs[1] = new NPCS(1, 10, 40, "/casino/MENDIGAR/promedio.png");
         npcs[2] = new NPCS(1, 20, 10, "/casino/MENDIGAR/rico.png");
 
-        for (int i = 0; i < spawner.length; i++) {
-            Random random = new Random();
-            int n = random.nextInt(3);
-            if (n == 2) {
-                int probabilidad = random.nextInt(100);
-                if (probabilidad < 50) {
-                    n = 0;
-                }
-            }
-            spawner[i] = npcs[n];
-            System.out.println("NPC AGREGADO AL SPAWNER");
-        }
+        
 
         ImageIcon fondo = new ImageIcon(getClass().getResource("/casino/Fondos/Random.jpg"));
         fondo1 = new JLabel(fondo);
@@ -82,6 +73,8 @@ public class Mendigar1 extends JFrame {
         persona2.setVisible(true);
 
         spawnear();
+        npcsActivos = limiteNPCS;
+        
 
         //Listeners
         persona1.addActionListener(new ActionListener() {
@@ -105,7 +98,7 @@ public class Mendigar1 extends JFrame {
         setVisible(true);
     }
 
-    public void animar(JButton boton, int xdeseada, int ydeseada, int intervalo, int posArreglo) {
+    public Timer animar(JButton boton, int xdeseada, int ydeseada, int intervalo, int posArreglo) {
         int posicionx = boton.getX();
         int posiciony = boton.getY();
         Timer timer = new Timer();
@@ -143,38 +136,66 @@ public class Mendigar1 extends JFrame {
             }
         };
         timer.scheduleAtFixedRate(task, 0, intervalo);
+        return timer;
 
     }//Fin de animar
 
     public void spawnear() {
         Random random = new Random();
-
+        npcsActivos = spawner.length;
+        
+        
+        for (int i = 0; i < spawner.length; i++) {
+           
+            int n = random.nextInt(3);
+            if (n == 2) {
+                int probabilidad = random.nextInt(100);
+                if (probabilidad < 50) {
+                    n = 0;
+                }
+            }
+            spawner[i] = npcs[n];
+            System.out.println("NPC AGREGADO AL SPAWNER");
+        }
+        
+        
         int xI = 0;
         int yI = 100;
 
         for (int i = 0; i < spawner.length; i++) {
-            int espacio = 0 - random.nextInt(100, 150);
+            int espacio = 0 - random.nextInt(100, 300);
             JButton persona = new JButton();
-            persona.setBounds((i * espacio), 100, 100, 100);
+            persona.setBounds(((i+1) * espacio), 100, 100, 100);
             persona.setIcon(spawner[i].imagen);
             //Esta seccion quita el resaltado del boton 
             persona.setBorderPainted(false);
             persona.setContentAreaFilled(false);
             System.out.println("Spawned");
 
+            Timer timer = animar(persona, 5, 0, 30, i);
+
             int i2 = i;
             persona.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     System.out.println(spawner[i2].cambio());
                     fondo1.remove(persona);
+                    timer.cancel();
+                    fondo1.revalidate();
                     fondo1.repaint();
+                    npcsActivos-=1;
+                    System.out.println(npcsActivos);
+                    if (npcsActivos == 0) {
+                        spawnear();
+                    }
+                    
+                    
                 }
             });
 
             fondo1.add(persona);
             persona.setVisible(true);
 
-            animar(persona, 5, 0, 30, i);
+            //animar(persona, 5, 0, 30, i);
         }
         fondo1.repaint();
 
@@ -182,7 +203,7 @@ public class Mendigar1 extends JFrame {
 
     public static void main(String[] args) {
         PlayerLocal jugador = new PlayerLocal();
-        Mendigar1 mendigar = new Mendigar1(jugador, 15);
+        Mendigar1 mendigar = new Mendigar1(jugador, 5);
         mendigar.setVisible(true);
     }
 
